@@ -36,11 +36,11 @@
 # For a complete CI/CD sample to get started with GitHub Action workflows for Desktop Applications,
 # refer to https://github.com/microsoft/github-actions-for-desktop-apps
 
-name: .NET Framework App build
+name: .NET Framework App build and release
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "build-testing" ]
   pull_request:
     branches: [ "master" ]
 
@@ -92,6 +92,7 @@ jobs:
       working-directory: bin/Release/
       
     - name: Generate release
+      if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
       uses: marvinpinto/action-automatic-releases@latest
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
