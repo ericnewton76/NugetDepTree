@@ -82,4 +82,27 @@ jobs:
     # Execute all unit tests in the solution
     #- name: Execute unit tests
     #  run: dotnet test
+    
+        
+    - name: Zip 
+      uses: montudor/action-zip@v1.0.0
+      with:
+        args: zip -qq NugetDepTree.zip
+        working-directory: NugetDepTree/bin/Release/
+      
+    - name: Generate release
+      uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest"
+        prerelease: false
+        title: "Release"
+        files: |
+#          LICENSE.txt
+          bin/Release/
 
+#    - name: Upload artifact
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: dist
+#        path: bin/Release/
