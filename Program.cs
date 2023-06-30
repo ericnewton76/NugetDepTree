@@ -15,7 +15,12 @@ namespace NugetDepTree
     {
         static void Main(string[] args)
         {
-            CommandLine.Parser.Default.ParseArguments<ProgramOptions>(args)
+            var parser = new CommandLine.Parser((settings) =>
+            {
+                settings.IgnoreUnknownArguments = true;
+            });
+
+            parser.ParseArguments<ProgramOptions>(args)
                 .WithParsed((options) => Run(options))
                 .WithNotParsed((errors) =>
                 {
@@ -23,7 +28,7 @@ namespace NugetDepTree
                         Console.WriteLine("Error: {0} {1}", error.Tag, error.StopsProcessing);
                 });
 
-            if (Debugger.IsAttached) { Console.Write("Program ended."); Console.ReadLine(); }
+            if (Debugger.IsAttached) { Console.Write("Program ended."); Console.ReadKey(); }
          }
 
         static void Run(ProgramOptions options)
