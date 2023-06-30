@@ -84,11 +84,12 @@ jobs:
     #  run: dotnet test
     
         
-    - name: Zip 
+    - name: Install Zip 
       uses: montudor/action-zip@v1.0.0
-      with:
-        args: zip -qq NugetDepTree.zip
-        working-directory: NugetDepTree/bin/Release/
+      
+    - name: Zip
+      run: zip -qq NugetDepTree.zip
+      working-directory: bin/Release/
       
     - name: Generate release
       uses: marvinpinto/action-automatic-releases@latest
