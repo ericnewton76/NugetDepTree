@@ -124,7 +124,19 @@ namespace NugetDepTree
                     }
                 }
 
-                if (options.Depth == -1 || depth + 1 <= options.Depth)
+                bool godeeper = true;
+
+                if (package.Id.StartsWith("System.") == true && options.SystemDependencies == false)
+                {
+                    godeeper = false;
+                }
+
+                if (depth + 1 <= options.Depth)
+                {
+                    godeeper = false;
+                }
+                
+                if(godeeper)
                 {
                     OutputGraph(repository, dependentPackages.Distinct(__comparer), depth + 1);
                 }
