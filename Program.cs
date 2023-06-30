@@ -156,11 +156,14 @@ namespace NugetDepTree
             if (options.HideVersions)
             {
                 Console.WriteLine("{0}{1}", depthStr, package.Id, package.Version);
+                return;
             }
-            else
-            {
-                Console.WriteLine("{0}{1} v{2}", depthStr, package.Id, package.Version);
-            }
+            
+            Console.Write("{0}{1} ", depthStr, package.Id, package.Version);
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("{0}", package.Version);
+            Console.ResetColor();
+
         }
 
         private static string[] GenerateCorePackageList()
