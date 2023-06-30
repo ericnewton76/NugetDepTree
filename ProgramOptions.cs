@@ -13,10 +13,10 @@ namespace NugetDepTree
     internal class ProgramOptions
     {
 
-        [Option('s', Default=DepthStyle.Spaces)]
+        [Option('s', "depthStyle", Default=DepthStyle.Spaces)]
         public DepthStyle DepthStyle { get; set; }
 
-        [Option('d', Default=-1)]
+        [Option('d', "depth", Default=-1)]
         public int Depth { get; set; }
 
         [Value(0)]
