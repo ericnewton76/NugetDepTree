@@ -22,8 +22,12 @@ namespace NugetDepTree
         [Option('d', "max-depth", Default=-1, HelpText="print package dependencies up to a specified depth. N=0 shows only direct dependencies.  default is -1 (full depth)")]
         public int Depth { get; set; }
 
+        [Option("system", Default = false, HelpText = "Dont exclude System.* dependencies.  Default is false (ie doesnt follow System.* dependencies)")]
+        public bool SystemDependencies { get; set; }
+
         [Value(0)]
         public string RepoPath { get; set; }
+
 
     }
 }
