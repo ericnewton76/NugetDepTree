@@ -34,12 +34,14 @@ namespace NugetDepTree
 
 
         private static PackageComparer __comparer = new PackageComparer();
-        private 
+        private static string[] _corepackages = GenerateCorePackageList();
 
         static void OutputGraph(LocalPackageRepository repository, IEnumerable<IPackage> packages, int depth)
         {
             foreach (IPackage package in packages)
             {
+                if (_corepackages.Contains(package.Id)) continue;
+                
                 var depthStr = new string(' ', depth * 2);
                 Console.WriteLine("{0}{1} v{2}", depthStr, package.Id, package.Version);
 
@@ -60,6 +62,15 @@ namespace NugetDepTree
 
                 OutputGraph(repository, dependentPackages.Distinct(__comparer), depth+1);
             }
+        }
+
+        private static string[] GenerateCorePackageList()
+        {
+            return new string[]
+            {
+                "System.Runtime",
+                "System.Reactive"
+            };
         }
     }
 }
