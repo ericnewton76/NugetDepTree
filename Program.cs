@@ -11,14 +11,9 @@ namespace NugetDepTree
 {
     internal class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            string repoFolder = "packages";
-            if (Directory.Exists(repoFolder) == false)
-            {
-                Console.Write("Enter the local repo folder: ");
-                repoFolder = Console.ReadLine();
-            }
+            string repoFolder = GetValidPackagesPath(args);
 
             tryagain:
             var repo = new LocalPackageRepository(repoFolder);
@@ -30,6 +25,21 @@ namespace NugetDepTree
             }
 
             OutputGraph(repo, packages, 0);
+        }
+
+        private static string GetValidPackagesPath(string[] args)
+        {
+            string specifiedFolder = "packages";
+            if (args.Length > 0) specifiedFolder = args[0];
+
+            while(Directory.Exists(specifiedFolder) == false && Directory.Exists(Path.Combine(specifiedFolder,"packages"))==false)
+            {
+                Console.WriteLine("Directory '{0}' doesnt exist.", Path.GetFullPath(specifiedFolder));
+                Console.Write("Enter path for the 'packages' folder: ");
+                specifiedFolder = Console.ReadLine();
+            }
+
+            return specifiedFolder;
         }
 
 
