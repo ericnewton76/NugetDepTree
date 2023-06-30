@@ -2,6 +2,7 @@
 using NuGet;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -15,7 +16,14 @@ namespace NugetDepTree
         static void Main(string[] args)
         {
             CommandLine.Parser.Default.ParseArguments<ProgramOptions>(args)
-                .WithParsed((options) => Run(options));
+                .WithParsed((options) => Run(options))
+                .WithNotParsed((errors) =>
+                {
+                    foreach (var error in errors)
+                        Console.WriteLine("Error: {0} {1}", error.Tag, error.StopsProcessing);
+                });
+
+            if (Debugger.IsAttached) { Console.Write("Program ended."); Console.ReadLine(); }
          }
 
         static void Run(ProgramOptions options)
