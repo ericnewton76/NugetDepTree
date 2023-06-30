@@ -48,18 +48,17 @@ jobs:
 
   build:
 
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
+    #strategy:
+    #  matrix:
+    #    configuration: [Debug, Release]
 
     runs-on: windows-latest  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:
-      Solution_Name: NugetDepTree                         # Replace with your solution name, i.e. MyWpfApp.sln.
-      Test_Project_Path: your-test-project-path                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
-      Wap_Project_Directory: your-wap-project-directory-name    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
-      Wap_Project_Path: your-wap-project-path                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
+      Configuration: Release
+      Solution_Name: NugetDepTree.sln # Replace with your solution name, i.e. MyWpfApp.sln.
+      Test_Project_Path: NugetDepTree_Tests\NugetDepTree_Tests.csproj # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
 
     steps:
     - name: Checkout
@@ -72,7 +71,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
       
     - name: Setup Nuget
-      uses: NuGet/setup-nuget@v1.0.2
+      uses: NuGet/setup-nuget@v1.2.0
 
     - name: Restore NuGet Packages
       run: nuget restore $env:Solution_Name
