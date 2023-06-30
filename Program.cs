@@ -110,7 +110,10 @@ namespace NugetDepTree
                     }
                 }
 
-                OutputGraph(repository, dependentPackages.Distinct(__comparer), depth+1);
+                if (options.Depth == -1 || depth + 1 <= options.Depth)
+                {
+                    OutputGraph(repository, dependentPackages.Distinct(__comparer), depth + 1);
+                }
             }
         }
 
