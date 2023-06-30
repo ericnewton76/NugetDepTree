@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace NugetDepTree
 {
-    public class ProgramEnd
-    {
+	public class ProgramEnd
+	{
 
-        public static void Wait(int seconds)
-        {
-            if (Console.IsOutputRedirected || Console.IsInputRedirected) return;
+		public static void Wait(int seconds)
+		{
+			if(Console.IsOutputRedirected || Console.IsInputRedirected) return;
 
-            Task.Run(() => {
-                Console.WriteLine("Program ended.");
-                Console.ReadKey();
-            }).Wait(seconds * 1000);
-        }
+			Task.Run(() => {
+				Console.WriteLine("Program ended.");
+				Console.ReadKey();
+			}).Wait(seconds * 1000);
+		}
 
-    }
+	}
 }
