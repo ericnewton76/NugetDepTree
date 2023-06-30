@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommandLine;
 
 namespace NugetDepTree
 {
@@ -17,7 +13,14 @@ namespace NugetDepTree
     internal class ProgramOptions
     {
 
+        [Option('s', Default=DepthStyle.Spaces)]
         public DepthStyle DepthStyle { get; set; }
+
+        [Option('d', Default=-1)]
+        public int Depth { get; set; }
+
+        [Value(0)]
+        public string RepoPath { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using NuGet;
+﻿using CommandLine;
+using NuGet;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,11 +14,15 @@ namespace NugetDepTree
     {
         static void Main(string[] args)
         {
-            options = new ProgramOptions() {
-                DepthStyle = DepthStyle.Spaces
-            };
+            CommandLine.Parser.Default.ParseArguments<ProgramOptions>(args)
+                .WithParsed((options) => Run(options));
+         }
 
-            string repoFolder = GetValidPackagesPath(args);
+        static void Run(ProgramOptions options)
+        {
+            Program.options = options;
+
+            string repoFolder = GetValidPackagesPath(options.RepoPath);
 
             tryagain:
             var repo = new LocalPackageRepository(repoFolder);
@@ -33,10 +38,9 @@ namespace NugetDepTree
 
         private static ProgramOptions options;
 
-        private static string GetValidPackagesPath(string[] args)
+        private static string GetValidPackagesPath(string startingPath)
         {
-            string specifiedFolder = "packages";
-            if (args.Length > 0) specifiedFolder = args[0];
+            string specifiedFolder = startingPath ?? "packages";
 
             while(Directory.Exists(specifiedFolder) == false && Directory.Exists(Path.Combine(specifiedFolder,"packages"))==false)
             {
