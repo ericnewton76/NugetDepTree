@@ -153,7 +153,14 @@ namespace NugetDepTree
                 S_depthStrings[depth] = depthStr;
             }
 
-            Console.WriteLine("{0}{1} v{2}", depthStr, package.Id, package.Version);
+            if (options.HideVersions)
+            {
+                Console.WriteLine("{0}{1}", depthStr, package.Id, package.Version);
+            }
+            else
+            {
+                Console.WriteLine("{0}{1} v{2}", depthStr, package.Id, package.Version);
+            }
         }
 
         private static string[] GenerateCorePackageList()

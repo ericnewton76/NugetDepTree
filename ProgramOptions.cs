@@ -28,6 +28,7 @@ namespace NugetDepTree
         [Value(0)]
         public string RepoPath { get; set; }
 
-
+        [Option("hide-versions", Default=false, HelpText="hides the package version information")]
+        public bool HideVersions { get; set; }
     }
 }
