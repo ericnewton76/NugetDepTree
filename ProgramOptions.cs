@@ -13,10 +13,13 @@ namespace NugetDepTree
     internal class ProgramOptions
     {
 
-        [Option('s', "depthStyle", Default=DepthStyle.Spaces)]
+        [Option('s', "depthStyle", Default = DepthStyle.Spaces, HelpText = "style of output when writing level of depth of the depencies.  Options are Spaces, Tabs, Graph")]
         public DepthStyle DepthStyle { get; set; }
 
-        [Option('d', "depth", Default=-1)]
+        [Option("spaces", Default=2, HelpText = "Number of spaces to output when DepthStyle=Spaces.  Minimum is 1.")]
+        public int DepthSpaces { get; set; }
+
+        [Option('d', "max-depth", Default=-1, HelpText="print package dependencies up to a specified depth. N=0 shows only direct dependencies.  default is -1 (full depth)")]
         public int Depth { get; set; }
 
         [Value(0)]
