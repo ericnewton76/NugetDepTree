@@ -80,34 +80,12 @@ namespace NugetDepTree
 
         static void OutputGraph(LocalPackageRepository repository, IEnumerable<IPackage> packages, int depth)
         {
-            var depthStrings = new Dictionary<int, string>();
-
             foreach (IPackage package in packages)
             {
                 if (_corepackages.Contains(package.Id)) continue;
 
-                string depthStr;
-                if(depthStrings.TryGetValue(depth, out depthStr) == false)
-                {
-                    switch(options.DepthStyle)
-                    {
-                        case DepthStyle.Spaces:
-                            depthStr = new string(' ', depth * options.DepthSpaces);
-                            break;
-                        case DepthStyle.Tabs:
-                            depthStr = new string('\t', depth);
-                            break;
-                        case DepthStyle.Graph:
-                            var sb = new StringBuilder(new string('-', depth * 2));
-                            if (depth > 0) sb[0] = '\\';
-                            depthStr = sb.ToString();
-                            break;
-                    }
-                    
-                    depthStrings[depth] = depthStr;
-                }
-
-                Console.WriteLine("{0}{1} v{2}", depthStr, package.Id, package.Version);
+                //write package info to output
+                WritePackageInfo(depth, package);
 
                 IList<IPackage> dependentPackages = new List<IPackage>();
                 foreach (var dependencySet in package.DependencySets)
@@ -141,6 +119,41 @@ namespace NugetDepTree
                     OutputGraph(repository, dependentPackages.Distinct(__comparer), depth + 1);
                 }
             }
+        }
+
+
+        private static Dictionary<int,string> S_depthStrings = new Dictionary<int, string>();
+
+        /// <summary>
+        /// Writes the package information to output
+        /// </summary>
+        /// <param name="depth"></param>
+        /// <param name="depthStrings"></param>
+        /// <param name="package"></param>
+        private static void WritePackageInfo(int depth, IPackage package)
+        {
+            string depthStr;
+            if (S_depthStrings.TryGetValue(depth, out depthStr) == false)
+            {
+                switch (options.DepthStyle)
+                {
+                    case DepthStyle.Spaces:
+                        depthStr = new string(' ', depth * options.DepthSpaces);
+                        break;
+                    case DepthStyle.Tabs:
+                        depthStr = new string('\t', depth);
+                        break;
+                    case DepthStyle.Graph:
+                        var sb = new StringBuilder(new string('-', depth * 2));
+                        if (depth > 0) sb[0] = '\\';
+                        depthStr = sb.ToString();
+                        break;
+                }
+
+                S_depthStrings[depth] = depthStr;
+            }
+
+            Console.WriteLine("{0}{1} v{2}", depthStr, package.Id, package.Version);
         }
 
         private static string[] GenerateCorePackageList()
