@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="PackageComparer.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ProgramEnd.cs" />
     <Compile Include="ProgramOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
