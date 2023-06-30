@@ -29,6 +29,7 @@ namespace NugetDepTree
         static void Run(ProgramOptions options)
         {
             Program.options = options;
+            ValidateOptions(options);
 
             string repoFolder = GetValidPackagesPath(options.RepoPath);
 
@@ -42,6 +43,14 @@ namespace NugetDepTree
             }
 
             OutputGraph(repo, packages, 0);
+        }
+
+        static void ValidateOptions(ProgramOptions options)
+        {
+            //reset depth if anything less than -1
+            if (options.Depth < -1) options.Depth = -1;
+
+            if (options.DepthSpaces < 1) options.DepthSpaces = 1;
         }
 
         private static ProgramOptions options;
@@ -78,7 +87,7 @@ namespace NugetDepTree
                     switch(options.DepthStyle)
                     {
                         case DepthStyle.Spaces:
-                            depthStr = new string(' ', depth * 2);
+                            depthStr = new string(' ', depth * options.DepthSpaces);
                             break;
                         case DepthStyle.Tabs:
                             depthStr = new string('\t', depth);
