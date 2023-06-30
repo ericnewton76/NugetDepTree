@@ -13,6 +13,10 @@ namespace NugetDepTree
     {
         static void Main(string[] args)
         {
+            options = new ProgramOptions() {
+                DepthStyle = DepthStyle.Spaces
+            };
+
             string repoFolder = GetValidPackagesPath(args);
 
             tryagain:
@@ -26,6 +30,8 @@ namespace NugetDepTree
 
             OutputGraph(repo, packages, 0);
         }
+
+        private static ProgramOptions options;
 
         private static string GetValidPackagesPath(string[] args)
         {
@@ -48,11 +54,33 @@ namespace NugetDepTree
 
         static void OutputGraph(LocalPackageRepository repository, IEnumerable<IPackage> packages, int depth)
         {
+            var depthStrings = new Dictionary<int, string>();
+
             foreach (IPackage package in packages)
             {
                 if (_corepackages.Contains(package.Id)) continue;
-                
-                var depthStr = new string(' ', depth * 2);
+
+                string depthStr;
+                if(depthStrings.TryGetValue(depth, out depthStr) == false)
+                {
+                    switch(options.DepthStyle)
+                    {
+                        case DepthStyle.Spaces:
+                            depthStr = new string(' ', depth * 2);
+                            break;
+                        case DepthStyle.Tabs:
+                            depthStr = new string('\t', depth);
+                            break;
+                        case DepthStyle.Graph:
+                            var sb = new StringBuilder(new string('-', depth * 2));
+                            if (depth > 0) sb[0] = '\\';
+                            depthStr = sb.ToString();
+                            break;
+                    }
+                    
+                    depthStrings[depth] = depthStr;
+                }
+
                 Console.WriteLine("{0}{1} v{2}", depthStr, package.Id, package.Version);
 
                 IList<IPackage> dependentPackages = new List<IPackage>();
