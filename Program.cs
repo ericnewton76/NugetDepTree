@@ -28,7 +28,7 @@ namespace NugetDepTree
                         Console.WriteLine("Error: {0} {1}", error.Tag, error.StopsProcessing);
                 });
 
-            if (Debugger.IsAttached) { Console.Write("Program ended."); Console.ReadKey(); }
+            ProgramEnd.Wait(10);
          }
 
         static void Run(ProgramOptions options)
